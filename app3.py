@@ -342,3 +342,5 @@ if __name__ == '__main__':
 #     kill -9 pid
 # After running above two commands now run the flask app, it will work fine
 
+# WHERE ARE FLASK UPLOADED FILES SAVED?
+#https://stackoverflow.com/questions/32057730/python-flask-making-all-file-uploads-go-to-tmp-directory
