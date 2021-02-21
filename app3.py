@@ -1,14 +1,15 @@
 import os
 import pandas as pd
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 import flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.express as px
+from werkzeug.utils import secure_filename
+from os.path import join, dirname, realpath
 
 project_root = os.path.dirname(__file__)
-
 print(project_root)
 #template_path = os.path.join(project_root, 'app/templates')
 #app = Flask(__name__, template_folder=template_path)
@@ -17,9 +18,6 @@ print(project_root)
 # app = dash.Dash(__name__)
 # server = app.server
 
-import dash
-import dash_html_components as html
-import flask
 
 server = flask.Flask(__name__)
 # app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp')
@@ -110,6 +108,81 @@ def data_test():
                            titles=['na', 'Bike Crashes', 'Ped Crashes'])
 
 
+
+# file Upload
+
+
+# @server.route('/file_input_test')
+# def file_input():
+#     """Renders the file input page"""
+#      return render_template('file_input_test.html')
+
+
+# @server.route('/uploader', methods=['GET', 'POST'])
+# def upload_file():
+#     if request.method == 'POST':
+#         f = request.files['file']
+#         f.save(secure_filename(f.filename))
+#         return 'file uploaded successfully'
+#
+#
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'rtf'}
+
+UPLOAD_FOLDER = '/tmp'
+#UPLOAD_FOLDER = '/Users/calvindechicago/Desktop'
+server.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+server.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@server.route('/upload_site', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(server.config['UPLOAD_FOLDER'], filename))
+            # return redirect(url_for('uploaded_file',
+            #                         filename=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>'''
+
+
+@server.route(f'{UPLOAD_FOLDER}/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(server.config['UPLOAD_FOLDER'],
+                               filename)
+
+
+# @app.route('/upload')
+# def upload_file():
+#     return render_template('upload.html')
+#
+
+# @app.route('/uploader', methods=['GET', 'POST'])
+# def upload_file():
+#     if request.method == 'POST':
+#         f = request.files['file']
+#         f.save(secure_filename(f.filename))
+#         return 'file uploaded successfully'
 
 
 
