@@ -16,30 +16,44 @@
     </p>
     <a href="http://127.0.0.1:5000/upload_site">File Upload Site</a>
     <div> Files uploaded to the site can be found at url/tmp/-filename-</div>
+    <br>
     <a href="http://127.0.0.1:5000/data_test">Data test page </a> <br>
-    <a href="http://127.0.0.1:5000/">The Home Page </a> <br>
+    <div> This page downloads a csv, parses it, and displays the data in a nicely formatted way </div>
+    <br>
     <a href="http://127.0.0.1:5000/test_page/banana">Test page banana </a> <br>
+    <div> This flask route  demonstrates variable rules. See app3 code for more details </div>
+    <br>
     <a href="http://127.0.0.1:5000/dashapp">Dash App 1</a> <br>
+   <div> This flask route  demonstrates a sample interactive Dash Graph </div>
+    <br>
     <a href="http://127.0.0.1:5000/dashapp2">Dash App 2</a> <br>
+    <div> This flask route  demonstrates a sample interactive Dash Graph </div>
+    <br>
 
 
-    <h4>
+  <div>
         Another cool feature of Flask is Jinja, which allows allows me to pass in information or variables using double curly brackets. This is a name passed into the template via Jinja: {{author}}
-    </h4>
+    <div>
 
-    <p> Notes on this work can be found on my Google drive, and in the code repository itself. Some important things to note: </p>
-    <p> I create the Flask and Dash objects differently than most tutorials show. This is to create a Flask driven website,
+    <p> Notes on this work can be found on my Google drive, and in the code repository itself. Some important things to note:
+        I create the Flask and Dash objects differently than most tutorials show. This is to create a Flask driven website,
         capable of controlling many routes, but that also allows some of those routes to contain dash apps and dashboards.
-
+<br>
         See these code snippets for a better idea:
-
-        # Create the Flask object
+<br>
+        <br>
+        # Create the Flask object:
+        <br>
         server = flask.Flask(__name__),
-
-        #Create a dash object
+<br>
+        <br>
+        #Create a dash object:
+        <br>
         app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp', external_stylesheets=external_stylesheets)
-
-        # Define a route using
+<br>
+        <br>
+        # Define a route using @server.route(...):
+        <br>
         @server.route('/data_test')
         def data_test():
     </p>
