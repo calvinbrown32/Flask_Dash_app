@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from flask import Flask, render_template, redirect, url_for, request, send_from_directory
+from flask import Flask, render_template, redirect, url_for, request, send_from_directory, flash
 import flask
 import dash
 import dash_core_components as dcc
@@ -20,7 +20,7 @@ print(project_root)
 
 
 server = flask.Flask(__name__)
-# app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp')
+# app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp/')
 # app.layout = html.Div(children=[
 #     html.H1(children='Dash App')])
 
@@ -28,7 +28,7 @@ server = flask.Flask(__name__)
 ##************************************
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp', external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp/', external_stylesheets=external_stylesheets)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
@@ -54,7 +54,7 @@ app.layout = html.Div(children=[
 ])
 ##*******************************************************
 
-app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp2', external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, server=server, url_base_pathname='/dashapp2/', external_stylesheets=external_stylesheets)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
@@ -172,6 +172,25 @@ def uploaded_file(filename):
                                filename)
 
 
+@server.route('/')
+def hello_world():
+    """test_page_2.html"""
+    return render_template('test_page_2.html', author = 'Calvin')
+#
+#
+# @app.route('/test_page_2')
+# def test_page_2():
+#     """returns another test page to demonstrate how flask routing works"""
+#     return render_template('/test_page_2.html')
+
+@server.route('/test_page/<test_pg_num>')
+def test_page(test_pg_num):
+    """This flask route  demonstrates variable rules """
+    return 'This is test page ' + str(test_pg_num)
+
+
+if __name__ == '__main__':
+    server.run(debug=True)
 # @app.route('/upload')
 # def upload_file():
 #     return render_template('upload.html')
@@ -219,25 +238,7 @@ def uploaded_file(filename):
 # )
 
 #
-@server.route('/')
-def hello_world():
-    """test_page_2.html"""
-    return render_template('test_page_2.html', author = 'Calvin')
-#
-#
-# @app.route('/test_page_2')
-# def test_page_2():
-#     """returns another test page to demonstrate how flask routing works"""
-#     return render_template('/test_page_2.html')
 
-@server.route('/test_page/<test_pg_num>')
-def test_page(test_pg_num):
-    """This flask route  demonstrates variable rules """
-    return 'This is test page ' + str(test_pg_num)
-
-
-if __name__ == '__main__':
-    server.run(debug=True)
 
 # @server.route('/data_test')
 # def data_test():
