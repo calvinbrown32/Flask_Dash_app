@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <title>File Upload</title>
+  <!-- >
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+  -->
+      <script src="./static/dropzone.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="./static/dropzone.min.css">
+  </head>
+  <body>
+    <h1>File Upload</h1>
+    <form action="{{ url_for('upload_files') }}" class="dropzone" id="mydropzone">
+    </form>
+
+
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script>
+var myDropzone = new Dropzone("#mydropzone", {
+   addRemoveLinks: true,
+   init: function() {
+     this.on("removedfile", function(file, data) {
+     document.getElementById('demo').innerHTML= "The following file was removed: " + file.name;
+
+
+
+    /* here do AJAX call to your server ... */
+    });
+   }
+});
+
+
+</script>
+<p id="demo"></p>
+
+
+<script>
+Dropzone.options.dropzone = {
+    success: function(file, response) {
+        file.serverFileName = response.file_name;  // pass filename
+    },
+    removedfile: function (file, data) {  // triggered when remove file button was clicked
+        $.ajax({  // send AJAX request to Flask to remove file
+            type:'POST',
+            url:'/deletefile',
+            data : {"filename" : file.serverFileName},  // pass filename
+            success : function (data) {
+                alert('File removed from server.')
+            }
+        });
+    }
+};
+</script>
+
+  </body>
+</html>

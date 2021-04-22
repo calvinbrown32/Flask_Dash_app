@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <link href="bootstrap/3.0.0/css/bootstrap.min.css"
+     rel="stylesheet">
+ </head>
+ <body>
+ <div>
+      This Page tests the passing of uploaded file names from a flask route, variable, or url reference to a
+     function within the flask app to an html page. The code used here is from:
+     https://stackoverflow.com/questions/49385103/return-list-of-previously-uploaded-files-back-to-flask
+
+ </div>
+ <br>
+  <div class="container">
+   <div class="header">
+    <h3 class="text-muted">Uploaded files</h3>
+   </div>
+   <hr/>
+   <div>
+   This is a list of the files you just uploaded, click on them to load/download them
+   <ul>
+    {% for file in filenames %}
+     <li><a href="{{url_for('uploaded_file2', filename=file)}}">{{file}}</a></li>
+    {% endfor %}
+   </ul>
+   <hr/>
+<!--   <form action="ks_test">-->
+<!--     <input type="submit" value="Kolmogorov-Smirnov test">-->
+<!--   </form>-->
+   </div>
+  </div>
+ </body>
+</html>
